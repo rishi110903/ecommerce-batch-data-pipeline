@@ -1,0 +1,57 @@
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+
+  airflow-webserver:
+    image: apache/airflow:2.8.1
+    command: webserver
+    ports:
+      - "8080:8080"
+    environment:
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    MYSQL_HOST: host.docker.internal
+    MYSQL_USER: root
+    MYSQL_PASSWORD: your_actual_password_here
+    MYSQL_DATABASE: de_batch_pipeline
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins 
+      - ${PROJECT_ROOT}/scripts:/opt/project/scripts
+      - ${PROJECT_ROOT}/data:/opt/project/data
+      - ${PROJECT_ROOT}/sql:/opt/project/sql
+    depends_on:
+      - postgres
+
+  airflow-scheduler:
+    image: apache/airflow:2.8.1
+    command: scheduler
+    environment:
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    MYSQL_HOST: host.docker.internal
+    MYSQL_USER: root
+    MYSQL_PASSWORD: your_actual_password_here
+    MYSQL_DATABASE: de_batch_pipeline
+volumes:
+  - ./dags:/opt/airflow/dags
+  - ./logs:/opt/airflow/logs
+  - ./plugins:/opt/airflow/plugins
+  - ${PROJECT_ROOT}/scripts:/opt/project/scripts
+  - ${PROJECT_ROOT}/data:/opt/project/data
+  - ${PROJECT_ROOT}/sql:/opt/project/sql
+
+depends_on:
+    - postgres
+
+volumes:
+  postgres-db-volume:

@@ -1,0 +1,4 @@
+pandas
+mysql-connector-python
+apache-airflow==2.8.1
+Docker desktop
