@@ -1,6 +1,6 @@
 # E-Commerce Batch Data Pipeline
 
-##Overview
+## Overview
 This project implements an end-to-end batch data engineering pipeline for e-commerce data using **Python, MySQL, Apache Airflow, and Docker**.
 
 The pipeline ingests raw CSV data, applies transformations, and builds analytics-ready fact and dimension tables.
@@ -16,6 +16,7 @@ CSV (Raw Data)
 → MySQL (Fact & Dimension Tables)
 → Orchestrated with Apache Airflow (Dockerized)
 
+
 ---
 
 ## Tech Stack
@@ -29,24 +30,24 @@ CSV (Raw Data)
 
 ## Pipeline Steps
 
-1. **Ingestion**
-   - Reads raw e-commerce CSV data
-   - Loads data into `raw_orders` table
+### 1. Ingestion
+- Reads raw e-commerce CSV data  
+- Loads data into `raw_orders` table  
 
-2. **Staging**
-   - Cleans and standardizes raw data
-   - Creates `stg_orders`
+### 2. Staging
+- Cleans and standardizes raw data  
+- Creates `stg_orders`  
 
-3. **Analytics Layer**
-   - Builds dimension tables:
-     - `dim_customer`
-     - `dim_product`
-   - Builds fact table:
-     - `fact_orders`
+### 3. Analytics Layer
+- Builds dimension tables:
+  - `dim_customer`
+  - `dim_product`
+- Builds fact table:
+  - `fact_orders`
 
-4. **Orchestration**
-   - Automated using Airflow DAG
-   - Tasks run sequentially with retries
+### 4. Orchestration
+- Automated using Airflow DAG  
+- Tasks run sequentially with retries  
 
 ---
 
@@ -58,14 +59,15 @@ CSV (Raw Data)
 
 ### Setup
 
-1. Clone the repository
+1. Clone the repository  
 2. Create a `.env` file inside `airflow-docker/`:
-   ```env
-   PROJECT_ROOT=your_project_path
-   MYSQL_HOST=host.docker.internal
-   MYSQL_USER=root
-   MYSQL_PASSWORD=your_password
-   MYSQL_DATABASE=de_batch_pipeline
+
+```env
+PROJECT_ROOT=your_project_path
+MYSQL_HOST=host.docker.internal
+MYSQL_USER=root
+MYSQL_PASSWORD=your_password
+MYSQL_DATABASE=de_batch_pipeline
 
 ## start airflow:
 docker compose up airflow-webserver airflow-scheduler
